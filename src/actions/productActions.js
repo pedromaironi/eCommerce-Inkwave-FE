@@ -21,6 +21,8 @@ import {
   PRODUCT_CREATE_REVIEW_FAIL,
 } from "../constants/productConstants";
 
+//! Products
+
 export const listProducts =
   (keyword = "") =>
   async (dispatch) => {
@@ -43,7 +45,9 @@ export const listProducts =
 export const ListproductbyCg = (Cg) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
-    const { data } = await axios.get(`/api/products/?Cg=${Cg}`);
+    const { data } = await axios.get(
+      `http://localhost:8080/api/v1/category/categoryName/${Cg}`
+    );
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
     console.log(data);
   } catch (error) {

@@ -7,6 +7,7 @@ import {
   Listproductbyfiter,
   Listproductbyprice,
 } from "../actions/productActions";
+import { listCategories } from "../actions/categoryActions";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsFilter } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
@@ -22,34 +23,54 @@ import {
 import HashLoader from "react-spinners/HashLoader";
 import { Link, Route } from "react-router-dom";
 const ProductsC = ({ match, history }) => {
+  console.log(useSelector((state) => state));
   const [From, setFrom] = useState(0);
+
   const [To, setTo] = useState(0);
 
   let Cg = window.location.search ? window.location.search.split("=")[1] : null;
   const keyword = window.location.pathname.split("/")[2];
+
   const dispatch = useDispatch();
+
+  //* Product List
   const productList = useSelector((state) => state.productList);
+
+  //* Product by Category
   const productbycg = useSelector((state) => {
     return state.ListproductbyCg;
   });
+
+  //* Product by Filter
   const productbyfilter = useSelector((state) => {
     return state.Listproductbyfilter;
   });
+
+  //* Product by Price
   const productbyprice = useSelector((state) => {
     return state.Listproductbyprice;
   });
+
+  //* Categories
+  const categories = useSelector((state) => {
+    return state.categoryList.categories;
+  });
+
+  useEffect(() => {
+    dispatch(listCategories());
+  }, [dispatch]);
 
   const { loading, error, products } = productbycg
     ? productbycg
     : productList
     ? productList
     : productbyprice;
+
   useEffect(() => {
     if (Cg) {
       console.log(window.location.search.split("=")[0]);
       if (window.location.search.split("=")[0] === "?cg") {
         dispatch(ListproductbyCg(Cg));
-        console.log(products);
       } else {
         dispatch(Listproductbyfiter(Cg));
       }
@@ -57,8 +78,10 @@ const ProductsC = ({ match, history }) => {
       dispatch(listProducts(keyword));
     }
   }, [dispatch, Cg, keyword]);
+
   const [showfilter, setshowfilter] = useState(false);
   const [showsearch, setshowsearch] = useState(false);
+
   const filterfunc = () => {
     setshowfilter(!showfilter);
     if (showsearch) {
@@ -79,7 +102,8 @@ const ProductsC = ({ match, history }) => {
     <>
       <div className="Cgfilter">
         <h1>
-          {Cg ? Cg : keyword ? "*" + keyword + "* Search" : "All"} Products
+          {Cg ? Cg : keyword ? "*" + keyword + "* Search" : "Lista de"}{" "}
+          Productos
         </h1>
         <div className="filtersbtn ">
           <button
@@ -88,7 +112,7 @@ const ProductsC = ({ match, history }) => {
           >
             {" "}
             {showfilter ? <IoMdClose size="20" /> : <BsFilter size="20" />}
-            Filter
+            Filtrar
           </button>
 
           <button
@@ -100,30 +124,22 @@ const ProductsC = ({ match, history }) => {
             ) : (
               <AiOutlineSearch size="20" />
             )}
-            Search
+            Buscar
           </button>
         </div>
 
         <div className="filters">
           <ul>
-            <Link className="lined" to="?cg">
-              All
-            </Link>
-            <Link className="lined" to="?cg=Men">
-              Men
-            </Link>
-            <Link className="lined" to="?cg=Women">
-              Women
-            </Link>
-            <Link className="lined" to="?cg=Watches">
-              Watches
-            </Link>
-            <Link className="lined" to="?cg=Shoes">
-              Shoes
-            </Link>
-            <Link to="?cg=Bag" className="lined">
-              Bag
-            </Link>
+            {/* Mostrar las categorías */}
+            {categories.map((category) => (
+              <Link
+                key={category.id}
+                className="lined"
+                to={`/?cg=${category.nombre}`}
+              >
+                {category.nombre}
+              </Link>
+            ))}
           </ul>
         </div>
       </div>

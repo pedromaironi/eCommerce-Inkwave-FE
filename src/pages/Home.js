@@ -3,6 +3,7 @@ import Slider from "../components/Slider";
 import Cardscg from "../components/Cardscg";
 import CgDiv from "../components/CgDiv";
 import ProductsC from "../components/ProductsC";
+import RecommendedProducts from "../components/RecommendedProducts";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 
@@ -21,6 +22,7 @@ const Home = () => {
         </div>
         <CgDiv />
         <ProductsC />
+        <RecommendedProducts />
       </div>
     </>
   );

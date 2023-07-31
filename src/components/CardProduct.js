@@ -43,7 +43,7 @@ const CardProduct = ({ product }) => {
           />
         </div>
         <div className="bottomcard">
-          <Link to={`/product/${product.id}`} exact={true}>
+          <Link to={`/product/${product.id}`} exact={"true"}>
             <span>{product.nombre}</span>
           </Link>
           {Incart ? (
@@ -63,12 +63,12 @@ const CardProduct = ({ product }) => {
           </div>
         </div>
 
-        <Link to={`/product/${product.id}`} exact={true}>
+        <Link to={`/product/${product.id}`} exact={"true"}>
           <button
             className={showbtn ? "QuickView QuickViewActive" : "QuickView"}
           >
             {" "}
-            View Details
+            Ver detalles
           </button>
         </Link>
       </div>
