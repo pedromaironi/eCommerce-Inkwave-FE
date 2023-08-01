@@ -23,7 +23,6 @@ import {
 import HashLoader from "react-spinners/HashLoader";
 import { Link, Route } from "react-router-dom";
 const ProductsC = ({ match, history }) => {
-  console.log(useSelector((state) => state));
   const [From, setFrom] = useState(0);
 
   const [To, setTo] = useState(0);
@@ -52,8 +51,8 @@ const ProductsC = ({ match, history }) => {
   });
 
   //* Categories
-  const categories = useSelector((state) => {
-    return state.categoryList.categories;
+  const categoryList = useSelector((state) => {
+    return state.categoryList;
   });
 
   useEffect(() => {
@@ -131,15 +130,21 @@ const ProductsC = ({ match, history }) => {
         <div className="filters">
           <ul>
             {/* Mostrar las categorías */}
-            {categories.map((category) => (
-              <Link
-                key={category.id}
-                className="lined"
-                to={`/?cg=${category.nombre}`}
-              >
-                {category.nombre}
-              </Link>
-            ))}
+            {categoryList && categoryList.loading ? (
+              <p>Loading...</p>
+            ) : categoryList && categoryList.error ? (
+              <p>Error: {categoryList.error}</p>
+            ) : categoryList && categoryList.categories ? (
+              categoryList.categories.map((category) => (
+                <Link
+                  key={category.id}
+                  className="lined"
+                  to={`/?cg=${category.nombre}`}
+                >
+                  {category.nombre}
+                </Link>
+              ))
+            ) : null}
           </ul>
         </div>
       </div>

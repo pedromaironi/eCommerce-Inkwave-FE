@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState, useRef } from "react";
 import Rating from "../../components/Rating";
 import { useDispatch, useSelector } from "react-redux";
@@ -86,10 +87,12 @@ const Productpage = ({ history, match }) => {
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
   };
+
+  console.log(useSelector((state) => console.log(state.productDetails)));
   return (
     <>
       <Helmet>
-        <title>{product.name}</title>
+        <title>{product.nombre}</title>
       </Helmet>
       <div className="productpage">
         {loading ? (
@@ -104,9 +107,10 @@ const Productpage = ({ history, match }) => {
               <div className="product-imgs">
                 <div className="img-display">
                   <div ref={imgShowcase} className="img-showcase">
-                    {product.images.map((i) => (
+                    {/* {product.images.map((i) => (
                       <Image src={i} />
-                    ))}
+                    ))} */}
+                    <Image src={product.imagen} />
                   </div>
                 </div>
                 <div className="img-select">
@@ -115,8 +119,8 @@ const Productpage = ({ history, match }) => {
                       <Image
                         objectFit="cover"
                         boxSize="200px"
-                        src={product.images[0]}
-                        alt="shoe image"
+                        src={product.imagen}
+                        alt="show image"
                       />
                     </a>
                   </div>
@@ -125,8 +129,8 @@ const Productpage = ({ history, match }) => {
                       <Image
                         objectFit="cover"
                         boxSize="200px"
-                        src={product.images[1]}
-                        alt="shoe image"
+                        src={product.imagen}
+                        alt="show image"
                       />
                     </a>
                   </div>
@@ -135,8 +139,8 @@ const Productpage = ({ history, match }) => {
                       <Image
                         objectFit="cover"
                         boxSize="200px"
-                        src={product.images[2]}
-                        alt="shoe image"
+                        src={product.imagen}
+                        alt="show image"
                       />
                     </a>
                   </div>
@@ -144,61 +148,66 @@ const Productpage = ({ history, match }) => {
               </div>
 
               <div className="product-content">
-                <h2 className="product-title">{product.name} </h2>
+                <h2 className="product-title">{product.nombre} </h2>
                 <Link to="/shop" className="product-link">
                   visit our store
                 </Link>
-                <Rating
-                  value={product.rating}
-                  text={`${product.numReviews} reviews`}
-                />
+                <Rating value={3} text={`${product.numReviews} reviews`} />
                 <div className="product-price">
                   <p className="last-price">
-                    Old Price:{" "}
-                    <span>${product.price + product.price * 0.5}</span>
+                    Precio antiguo:{" "}
+                    <span>${product.precio + product.precio}</span>
                   </p>
                   <p className="new-price">
-                    New Price: <span>${product.price} (5%)</span>
+                    Precio actual: <span>${product.precio} (50%)</span>
                   </p>
                 </div>
 
                 <div className="product-detail">
-                  <h2>about this item: </h2>
-                  <p>{product.description}</p>
+                  <h2>Acerca de este producto: </h2>
+                  <p>{product.descripcion}</p>
                   <div>
                     <ul>
-                      <li>Size</li>{" "}
+                      <li>Talla</li>{" "}
                       <Select
                         className="select-product"
-                        placeholder="Choose an option"
+                        placeholder="Elige una opcion"
                       >
-                        {product.sizes.map((size) => (
+                        {/* {product.talla.map((size) => (
                           <option value={size}>{size}</option>
-                        ))}
+                        ))} */}
+                        <option value={product.talla_nombre}>
+                          {product.talla_nombre}
+                        </option>
                       </Select>
                     </ul>
                   </div>
                   <ul>
                     <li>
-                      Status:{" "}
+                      Estado:{" "}
+                      <span>{product.stock > 0 ? "en stock" : "agotado"}</span>
+                    </li>
+                    <li>
+                      Marca: <span>{product.marca_nombre}</span>
+                    </li>
+                    <li>
+                      Color: <span>{product.detalle_color}</span>
+                    </li>
+                    <li>
+                      Categoria:{" "}
                       <span>
-                        {product.countInStock > 0 ? "ìn stock" : "Out Of Stock"}
+                        {/* {product.category.map((cg) => " | " + cg + " | ")} */}
+                        {product.categoria_nombre}
                       </span>
                     </li>
                     <li>
-                      Category:{" "}
-                      <span>
-                        {product.category.map((cg) => " | " + cg + " | ")}
-                      </span>
-                    </li>
-                    <li>
-                      Shipping Area: <span>All over the world</span>
+                      Zona de envío: <span>Por todo el mundo</span>
                     </li>
                     <div>
                       <ul>
                         {" "}
-                        <li>Qty :</li>
-                        {product.countInStock > 0 ? (
+                        <li>Cantidad :</li>
+                        {product.stock > 0 ? (
                           <Select
                             as="select"
                             size="md"
@@ -207,17 +216,15 @@ const Productpage = ({ history, match }) => {
                             className="select-product"
                             onChange={(e) => setQty(e.target.value)}
                           >
-                            {[...Array(product.countInStock).keys()].map(
-                              (x) => (
-                                <option key={x + 1} value={x + 1}>
-                                  {x + 1}
-                                </option>
-                              )
-                            )}
+                            {[...Array(product.stock).keys()].map((x) => (
+                              <option key={x + 1} value={x + 1}>
+                                {x + 1}
+                              </option>
+                            ))}
                           </Select>
                         ) : (
                           <span style={{ display: "flex" }}>
-                            <MdDoNotDisturb size="26" /> OUT OF STOCK{" "}
+                            <MdDoNotDisturb size="26" /> AGOTADO{" "}
                           </span>
                         )}
                       </ul>
@@ -230,16 +237,16 @@ const Productpage = ({ history, match }) => {
                     onClick={addToCartHandler}
                     type="button"
                     className="btn-shop"
-                    disabled={product.countInStock === 0}
+                    disabled={product.stock === 0}
                   >
                     {" "}
                     <AiFillShop size="24" />
-                    Add to Cart{" "}
+                    Agregar al carrito{" "}
                   </Button>
                 </div>
 
                 <div className="social-links">
-                  <p>Share On: </p>
+                  <p>Compartir en: </p>
                   <Link className="social" to="#">
                     <i>
                       {" "}
@@ -262,23 +269,24 @@ const Productpage = ({ history, match }) => {
           </div>
         )}
         <div className="REVIEWS">
-          <h1>Reviews :</h1>
-          {product.reviews.length === 0 && <h2>NO REVIEWS</h2>}
+          <h1>Reviews:</h1>
+          <h2>NO EXISTEN REVIEWS PARA ESTE PRODUCTO</h2>
+          {/* {product.reviews.length === 0 && <h2>NO REVIEWS</h2>} */}
           <div>
-            {product.reviews.map((review) => (
+            {/* {product.reviews.map((review) => (
               <div className="review">
                 <h4>{review.name}</h4>
                 <div className="Ratingreview">
-                  <Rating value={review.rating} />
+                  <Rating value={3} />
                 </div>
                 <p className="commentreview">{review.comment}</p>
                 <p className="datereview">
                   {review.createdAt.substring(0, 10)}
                 </p>
-              </div>
-            ))}
+              </div> 
+            ))}*/}
             <div className="createreview">
-              <h1>Create New Review :</h1>
+              <h1>Crear una nueva reseña:</h1>
               {errorProductReview && <h2>{errorProductReview}</h2>}
               {userInfo ? (
                 <FormControl>
@@ -296,12 +304,13 @@ const Productpage = ({ history, match }) => {
                     placeholder="Leave Comment here :"
                   />
                   <Button colorScheme="blue" onClick={submithanlder}>
-                    Submit
+                    Enviar
                   </Button>
                 </FormControl>
               ) : (
                 <>
-                  Please <Link to="/login">Sign In</Link> To write a review.
+                  Por favor <Link to="/login">Inicie Sesion</Link> para escribir
+                  una reseña.
                 </>
               )}
             </div>
