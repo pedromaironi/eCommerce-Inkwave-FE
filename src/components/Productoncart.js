@@ -11,10 +11,6 @@ const Productoncart = ({ product }) => {
 
   const [qty, setqty] = useState(0);
   const select = useRef(null);
-  useEffect(() => {
-    console.log(product.images);
-    return () => {};
-  }, []);
 
   const optionvalue = () => {
     setqty(parseInt(select.current.value));
@@ -22,10 +18,12 @@ const Productoncart = ({ product }) => {
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
   };
+
+  console.log(product);
   return (
     <div className="productcart">
       <div className="imagecart">
-        <Image objectFit="cover" src={product.images[0]} />
+        <Image objectFit="cover" src={product.images} />
       </div>
       <div>
         <Link to={`/product/${product.product}`}>
@@ -33,7 +31,7 @@ const Productoncart = ({ product }) => {
         </Link>
 
         <h2 className="priceproduct">{product.price}$</h2>
-        <h2 className="sandh">sold and shiped by FedEx</h2>
+        <h2 className="sandh">Vendido y enviado por FedEx</h2>
       </div>
       <div className="qtyoption">
         <Select

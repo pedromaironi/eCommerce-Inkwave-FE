@@ -88,7 +88,6 @@ const Productpage = ({ history, match }) => {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
   };
 
-  console.log(useSelector((state) => console.log(state.productDetails)));
   return (
     <>
       <Helmet>
@@ -100,7 +99,7 @@ const Productpage = ({ history, match }) => {
             <HashLoader color={"#1e1e2c"} loading={loading} size={50} />
           </div>
         ) : error ? (
-          <h2>{error} </h2>
+          <h2>Error al cargar los detalles del producto: {error}</h2>
         ) : (
           <div className="card-wrapper">
             <div className="card">
@@ -271,7 +270,7 @@ const Productpage = ({ history, match }) => {
         <div className="REVIEWS">
           <h1>Reviews:</h1>
           <h2>NO EXISTEN REVIEWS PARA ESTE PRODUCTO</h2>
-          {/* {product.reviews.length === 0 && <h2>NO REVIEWS</h2>} */}
+          {/* {errorProductReview && <h2>Error al enviar la reseña: {errorProductReview}</h2>} */}
           <div>
             {/* {product.reviews.map((review) => (
               <div className="review">

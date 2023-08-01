@@ -20,7 +20,7 @@ const CardProduct = ({ product }) => {
   }, [cartItems, product.id]);
   const addcart = () => {
     setIncart(true);
-    dispatch(addToCart(product._id, 1));
+    dispatch(addToCart(product.id, 1));
   };
 
   return (
