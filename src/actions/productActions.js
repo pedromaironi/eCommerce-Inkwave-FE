@@ -48,15 +48,15 @@ export const ListproductbyCg = (Cg) => async (dispatch) => {
     const { data } = await axios.get(
       `http://localhost:8080/api/v1/category/categoryName/${Cg}`
     );
+
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
-    console.log(data);
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message,
+          : "Ocurrió un error al obtener los productos",
     });
   }
 };

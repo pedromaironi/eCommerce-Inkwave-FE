@@ -97,11 +97,12 @@ const ProductsC = ({ match, history }) => {
     dispatch(Listproductbyprice(From, To));
   };
 
+  console.log(products);
   return (
     <>
       <div className="Cgfilter">
         <h1>
-          {Cg ? Cg : keyword ? "*" + keyword + "* Search" : "Lista de"}{" "}
+          {Cg ? Cg + " | " : keyword ? "*" + keyword + "* Search" : "Lista de "}{" "}
           Productos
         </h1>
         <div className="filtersbtn ">
@@ -230,9 +231,11 @@ const ProductsC = ({ match, history }) => {
           <HashLoader color={"#fff"} loading={loading} size={40} />
         </div>
       ) : error ? (
-        <h2>{error} </h2>
-      ) : products.length === 0 ? (
-        <h1 className="nothingfound">Nothing Found !!!</h1>
+        <h2>{error}</h2>
+      ) : products && products.length === 0 ? (
+        <h1 className="nothingfound">
+          No existen productos en esta categoría.
+        </h1>
       ) : (
         <div className="cardsProduct">
           {products.map((product) => (
