@@ -43,7 +43,7 @@ const LoginScreen = ({ location, history }) => {
 
   function remcl() {
     let parent = this.parentNode.parentNode;
-    if (this.value == "") {
+    if (this.value === "") {
       parent.classList.remove("focus");
     }
   }
@@ -66,7 +66,7 @@ const LoginScreen = ({ location, history }) => {
         </div>
         <div className="login-content">
           <form onSubmit={submitHandler}>
-            <h1>Member Login</h1>
+            <h1>Iniciar Sesión</h1>
             {error && <h4>{error}</h4>}
             <div className="input-div one">
               <div className="i">
