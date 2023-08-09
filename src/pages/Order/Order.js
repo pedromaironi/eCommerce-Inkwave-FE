@@ -54,7 +54,7 @@ const Order = ({ match, history }) => {
       };
       document.body.appendChild(script);
     };
-    if (!order || successPay || successDeliver || order._id !== orderId) {
+    if (!order || successPay || successDeliver || order.id !== orderId) {
       dispatch({
         type: ORDER_PAY_RESET,
       });

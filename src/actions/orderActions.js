@@ -26,6 +26,14 @@ export const CreateOrder = (order) => async (dispatch, getState) => {
       type: ORDER_CREATE_REQUEST,
     });
 
+    const { userInfo, totalPrice, date, status, orderItems } = order;
+    const orderInfo = {
+      userID: userInfo.id,
+      date: date,
+      total: totalPrice,
+      status: status,
+      orderItems: orderItems,
+    };
     // const {
     //   userLogin: { userInfo },
     // } = getState();
@@ -38,10 +46,11 @@ export const CreateOrder = (order) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.post(
-      `http://localhost:8080/api/v1/order`,
-      order,
+      `http://localhost:8080/api/v1/order/create`,
+      orderInfo,
       config
     );
+
     dispatch({
       type: ORDER_CREATE_SUCCESS,
       payload: data,

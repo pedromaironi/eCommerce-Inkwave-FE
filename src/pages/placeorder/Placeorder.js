@@ -8,6 +8,7 @@ import "./Placeorder.css";
 const Placeorder = ({ history }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.userLogin.userInfo);
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
@@ -25,6 +26,14 @@ const Placeorder = ({ history }) => {
   ).toFixed(2);
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
+
+  // Formatted dates
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Month is 0-based
+  const day = String(currentDate.getDate()).padStart(2, "0");
+  const formattedDate = `${year}-${month}-${day}`;
+
   const Placeorderhanlder = () => {
     dispatch(
       CreateOrder({
@@ -35,13 +44,16 @@ const Placeorder = ({ history }) => {
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
+        userInfo: user,
+        date: formattedDate,
+        status: "delivered",
       })
     );
   };
   useEffect(() => {
     if (success) {
-      console.log(order._id);
-      history.push(`/order/${order._id}`);
+      console.log(order.id);
+      history.push(`/order/${order.id}`);
     }
     return () => {};
     //eslint-disable-next-line
