@@ -89,11 +89,11 @@ const Order = ({ match, history }) => {
   ) : (
     <div className="placeorder">
       <Helmet>
-        <title>ORDER</title>
+        <title>Envio | Orden</title>
       </Helmet>
       <div className="informations-placeorder">
         <div className="shipping-placeorder">
-          <h2>Shipping</h2>
+          <h2>Envio | Orden</h2>
           <p>
             <strong>Name: </strong>
             {order.user.name}

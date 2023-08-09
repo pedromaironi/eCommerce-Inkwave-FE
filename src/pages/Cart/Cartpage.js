@@ -35,15 +35,15 @@ const Cartpage = ({ match, location, history }) => {
           <div className="cart">
             <h1>Mi Carrito: {cartItems.length}</h1>
             <div className="productsoncart">
-              {cartItems.map((product) => (
-                <Productoncart product={product} />
+              {cartItems.map((product, index) => (
+                <Productoncart key={index} product={product} />
               ))}
             </div>
           </div>
           <div className="totalcart">
             <h3>
               Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}{" "}
-              items) :
+              items):
             </h3>
             <h3 className="totalprice">
               {cartItems
@@ -53,7 +53,7 @@ const Cartpage = ({ match, location, history }) => {
             </h3>
             <h3>Delivery :</h3>
             <h3 className="totalprice">For free.</h3>
-            <h3>Taxes :</h3>
+            <h3>Taxes:</h3>
             <h3 className="totalprice">-- --.</h3>
             <h3>Total :</h3>
             <h3 className="totalprice">

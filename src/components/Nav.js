@@ -20,6 +20,8 @@ import {
   //   IoLogOutOutline,
   IoMdLogOut,
 } from "react-icons/io";
+import { AiOutlineShopping } from "react-icons/ai";
+
 import { MdSearch, MdKeyboardArrowRight } from "react-icons/md";
 import { BsArrowRightShort } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
@@ -132,6 +134,14 @@ const Nav = ({ history }) => {
         {!showSearchIc && (
           <MdSearch className="iconSearch" size="26" onClick={onSeacrhFun} />
         )}
+
+        <Link to="/history">
+          <AiOutlineShopping className="iconHistory" size="26" />
+          {userInfo && !userInfo.isAdmin && (
+            <div className="dotcart">{incart}</div>
+          )}
+        </Link>
+
         <Link to="/cart">
           {" "}
           <RiShoppingCart2Line className="iconCart" size="26" />

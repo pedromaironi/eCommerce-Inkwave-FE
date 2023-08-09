@@ -38,18 +38,18 @@ const Checkout = ({ history }) => {
         <div className="info-check">
           <form onSubmit={handleorder}>
             <div className="billing-check">
-              <h1>Billing Address</h1>
-              {/* <label for="name" className="this-label">Full Name</label><br />
+              <h1>Dirección de Envio</h1>
+              {/* <label htmlFor="name" className="this-label">Full Name</label><br />
                         <Input variant="flushed" placeholder="Your name" required id="name"/><br />
-                        <label for="email" className="this-label" >Email</label><br />
+                        <label htmlFor="email" className="this-label" >Email</label><br />
                         <Input variant="flushed" placeholder="Your mail" required id="email"/><br /> */}
-              <label for="address" className="this-label">
-                Address
+              <label htmlFor="address" className="this-label">
+                Dirección
               </label>
               <br />
               <Input
                 variant="flushed"
-                placeholder="Your Address"
+                placeholder="Tu dirección"
                 required
                 value={address}
                 id="address"
@@ -63,28 +63,28 @@ const Checkout = ({ history }) => {
                   variant="flushed"
                   onChange={(e) => setCountry(e.target.value)}
                 >
-                  <option value="Maroc">Maroc</option>
-                  <option value="Algerie">Algerie</option>
-                  <option value="France">France</option>
-                  <option value="Espagne">Espagne</option>
+                  <option value="RepDom">Rep. Dom</option>
+                  <option value="USA">USA</option>
+                  <option value="France">Francia</option>
+                  <option value="Espagne">España</option>
                 </Select>
               </Stack>
               <div className="city-cp-check">
                 <div>
-                  <label for="city" className="this-label">
-                    City
+                  <label htmlFor="city" className="this-label">
+                    Ciudad
                   </label>
                   <Input
                     variant="flushed"
                     required
-                    placeholder="Your City"
+                    placeholder="Tu ciudad"
                     onChange={(e) => setCity(e.target.value)}
                     id="city"
                   />
                 </div>
                 <div>
-                  <label for="zip" className="this-label">
-                    Zip
+                  <label htmlFor="zip" className="this-label">
+                    Código postal
                   </label>
                   <Input
                     variant="flushed"
@@ -98,7 +98,7 @@ const Checkout = ({ history }) => {
             </div>
 
             <div className="payment-check">
-              <h1>Payment Method</h1>
+              <h1>Método de pago</h1>
 
               <input
                 onChange={(e) => {
@@ -110,8 +110,8 @@ const Checkout = ({ history }) => {
                 name="payment"
                 id="card"
               />
-              <label for="card" className="this-label">
-                Credit Card
+              <label htmlFor="card" className="this-label">
+                Tarjeta de credito
               </label>
               <div className="accept-cards-imgs">
                 <Image src="https://i.imgur.com/AHCoUZO.png" alt="visa" />
@@ -120,18 +120,18 @@ const Checkout = ({ history }) => {
               </div>
               <div className={carddetails ? "detailsenable" : "detailsdisable"}>
                 <div>
-                  <label for="name-card" className="this-label">
-                    Name on Card
+                  <label htmlFor="name-card" className="this-label">
+                    Nombre en la tarjeta
                   </label>
                   <br />
                   <Input
                     variant="flushed"
                     id="name-card"
-                    placeholder="Souhail Bourhjoul"
+                    placeholder="Pedro M. Toribio"
                   />
                 </div>
                 <div>
-                  <label for="number-card" className="this-label">
+                  <label htmlFor="number-card" className="this-label">
                     Credit card number
                   </label>
                   <br />
@@ -142,25 +142,25 @@ const Checkout = ({ history }) => {
                   />
                 </div>
                 <div>
-                  <label for="expir-mt-card" className="this-label">
-                    Exp Month
+                  <label htmlFor="expir-mt-card" className="this-label">
+                    Exp Mes
                   </label>
                   <br />
                   <Input
                     variant="flushed"
                     id="expir-mt-card"
-                    placeholder="January"
+                    placeholder="Junio"
                   />
                 </div>
                 <div className="exp-ye-cvv-check">
                   <div>
-                    <label for="exp-year" className="this-label">
-                      Exp Year
+                    <label htmlFor="exp-year" className="this-label">
+                      Exp Año
                     </label>
                     <Input variant="flushed" placeholder="2023" id="exp-year" />
                   </div>
                   <div>
-                    <label for="cvv-check" className="this-label">
+                    <label htmlFor="cvv-check" className="this-label">
                       Cvv
                     </label>
                     <Input variant="flushed" placeholder="512" id="cvv-check" />
@@ -177,7 +177,7 @@ const Checkout = ({ history }) => {
                 name="payment"
                 id="paypal"
               />
-              <label for="paypal" className="this-label">
+              <label htmlFor="paypal" className="this-label">
                 {" "}
                 Paypal
               </label>
@@ -187,28 +187,28 @@ const Checkout = ({ history }) => {
                 width="120px"
                 height="40px"
               />
-              <div class="confirm">
+              <div className="confirm">
                 <input
                   type="submit"
                   className="confirm-check"
-                  value="Place to order"
+                  value="Ordenar"
                 />
               </div>
             </div>
           </form>
-          <div class="your-products">
+          <div className="your-products">
             {cart.cartItems.length === 0 ? (
               <h1>
                 {" "}
                 <RiShoppingCart2Line size="29" />
-                Cart(0)
+                Carrito(0)
               </h1>
             ) : (
               <>
                 <h1>
                   {" "}
                   <RiShoppingCart2Line size="29" />
-                  Cart({cart.cartItems.length})
+                  Carrito({cart.cartItems.length})
                 </h1>
                 <div className="cart-summ">
                   {cart.cartItems.map((item, index) => (

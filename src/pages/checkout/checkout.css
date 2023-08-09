@@ -53,6 +53,7 @@
 
 .city-cp-check {
   display: flex;
+  column-gap: 10px;
 }
 .exp-ye-cvv-check {
   display: flex;

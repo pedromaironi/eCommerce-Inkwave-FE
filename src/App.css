@@ -103,6 +103,9 @@ nav {
 .search {
   display: none;
 }
+.iconHistory {
+  margin-right: 20px;
+}
 .iconCart,
 .signin {
   cursor: pointer;

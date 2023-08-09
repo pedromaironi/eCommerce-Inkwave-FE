@@ -19,7 +19,6 @@ const Productoncart = ({ product }) => {
     dispatch(removeFromCart(id));
   };
 
-  console.log(product);
   return (
     <div className="productcart">
       <div className="imagecart">
@@ -42,7 +41,10 @@ const Productoncart = ({ product }) => {
           }
         >
           {[...Array(product.countInStock).keys()].map((x) => (
-            <option value={x + 1}> {x + 1}</option>
+            <option key={x + 1} value={x + 1}>
+              {" "}
+              {x + 1}
+            </option>
           ))}
         </Select>
         <h2>

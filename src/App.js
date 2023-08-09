@@ -23,6 +23,8 @@ import Edituser from "./pages/Useredit/Edituser";
 import Products from "./pages/products/products";
 import Editproduct from "./pages/Editproduct/Editproduct";
 import Orders from "./pages/Orders/Orders";
+import GlobalStateViewer from "./components/GlobalStateViewer";
+import historyScreen from "./pages/History/historyScreen";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -44,11 +46,13 @@ const App = () => {
               </div>
             ) : (
               <>
+                <GlobalStateViewer />
                 <Nav />
                 <Switch>
                   <Route path="/" exact={true} component={Home} />
                   <Route path="/about" component={About} />
                   <Route path="/shop" component={Shop} />
+                  <Route path="/history" component={historyScreen} />
                   <Route path="/contactus" component={Contactus} />
                   <Route path="/product/:id" component={Productpage} />
                   <Route path="/cart/:id?" component={Cartpage} />

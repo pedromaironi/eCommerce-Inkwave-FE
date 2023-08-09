@@ -26,18 +26,22 @@ export const CreateOrder = (order) => async (dispatch, getState) => {
       type: ORDER_CREATE_REQUEST,
     });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+    // const {
+    //   userLogin: { userInfo },
+    // } = getState();
 
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
+        // Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.post(`/api/orders`, order, config);
+    const { data } = await axios.post(
+      `http://localhost:8080/api/v1/order`,
+      order,
+      config
+    );
     dispatch({
       type: ORDER_CREATE_SUCCESS,
       payload: data,
