@@ -236,8 +236,8 @@ const ProfileScreen = ({ location, history }) => {
                     </Thead>
                     <Tbody>
                       {orders.map((order) => (
-                        <Tr key={order._id}>
-                          <Td>{order._id}</Td>
+                        <Tr key={order.id}>
+                          <Td>{order.id}</Td>
                           <Td>{order.createdAt.substring(0, 10)}</Td>
                           <Td>{order.totalPrice}</Td>
                           <Td>
@@ -251,7 +251,7 @@ const ProfileScreen = ({ location, history }) => {
                               : "Not Yet"}
                           </Td>
                           <Td>
-                            <Link to={`/order/${order._id}`}>
+                            <Link to={`/order/${order.id}`}>
                               <Button size="xs">DETAILS</Button>
                             </Link>
                           </Td>

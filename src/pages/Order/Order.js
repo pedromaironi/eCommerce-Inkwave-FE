@@ -19,16 +19,20 @@ import {
 } from "../../constants/orderConstants";
 import { Button } from "@chakra-ui/button";
 const Order = ({ match, history }) => {
-  const [sdkReady, setsdkReady] = useState(false);
+  // const [sdkReady, setsdkReady] = useState(false);
   const orderId = match.params.id;
+  // console.log(orderId);
   const dispatch = useDispatch();
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
-  const orderPay = useSelector((state) => state.orderPay);
-  const { loading: loadingpay, success: successPay } = orderPay;
-
+  // const orderPay = useSelector((state) => state.orderPay);
+  const orderPay = {
+    loadingPay: true,
+    successPay: true,
+  };
+  const { loadingpay, successPay } = orderPay;
   const orderDeliver = useSelector((state) => state.orderDeliver);
-  const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+  const { loadingDeliver, successDeliver } = orderDeliver;
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const addDecimals = (num) => {
@@ -36,40 +40,44 @@ const Order = ({ match, history }) => {
   };
   if (!loading) {
     order.itemsPrice = addDecimals(
-      order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+      (order.orderItems || []).reduce(
+        (acc, item) => acc + item.price * item.qty,
+        0
+      )
     );
   }
   useEffect(() => {
     if (!userInfo) {
       history.push("/login");
     }
-    const addPaypalscript = async () => {
-      const { data: clientId } = await axios.get("/api/config/paypal ");
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.async = true;
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-      script.onload = () => {
-        setsdkReady(true);
-      };
-      document.body.appendChild(script);
-    };
-    if (!order || successPay || successDeliver || order.id !== orderId) {
-      dispatch({
-        type: ORDER_PAY_RESET,
-      });
-      dispatch({
-        type: ORDER_DELIVER_RESET,
-      });
+    console.log(order, order.orderId, orderId);
+    if (loading) {
       dispatch(getOrderDetails(orderId));
-    } else if (!order.isPaid) {
-      if (!window.paypal) {
-        addPaypalscript();
-      } else {
-        setsdkReady(true);
-      }
     }
-  }, [dispatch, orderId, successPay, orderPay, successDeliver, userInfo]);
+  }, [dispatch, orderId, userInfo, order, history, loading]);
+
+  // useEffect(() => {
+  //   const addPaypalscript = async () => {
+  //     const { data: clientId } = await axios.get("/api/config/paypal ");
+  //     const script = document.createElement("script");
+  //     script.type = "text/javascript";
+  //     script.async = true;
+  //     script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+  //     script.onload = () => {
+  //       setsdkReady(true);
+  //     };
+  //     document.body.appendChild(script);
+  //   };
+
+  //   if (!order || successPay || successDeliver || order.isPaid) {
+  //     if (!window.paypal) {
+  //       addPaypalscript();
+  //     } else {
+  //       setsdkReady(true);
+  //     }
+  //   }
+  // }, [order, successPay, successDeliver]);
+
   const successpaymenthandler = (paymentResult) => {
     dispatch(payOrder(orderId, paymentResult));
   };
@@ -92,7 +100,7 @@ const Order = ({ match, history }) => {
         <title>Envio | Orden</title>
       </Helmet>
       <div className="informations-placeorder">
-        <div className="shipping-placeorder">
+        {/* <div className="shipping-placeorder">
           <h2>Envio | Orden</h2>
           <p>
             <strong>Name: </strong>
@@ -125,25 +133,27 @@ const Order = ({ match, history }) => {
               <div className="notpaid">NOT PAID YET</div>
             )}
           </p>
-        </div>
+        </div> */}
         <hr className="hr" />
         <div>
           <h2>Order Items: </h2>
-          {order.orderItems.length === 0 ? (
+          {order.length === 0 ? (
             <p>Your order is empty</p>
           ) : (
             <div className="orders-placeorder">
-              {order.orderItems.map((item, index) => (
-                <p key={index}>
-                  <span className="color-name">
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>
-                  </span>{" "}
-                  <b>
-                    {item.qty} x ${item.price} = ${item.qty * item.price}
-                  </b>
-                  <hr className="hr" />
-                </p>
-              ))}
+              {order &&
+                order.orderItems &&
+                order.orderItems.map((item, index) => (
+                  <p key={index}>
+                    <span className="color-name">
+                      <Link to={`/product/${item.product}`}>{item.name}</Link>
+                    </span>{" "}
+                    <b>
+                      {item.qty} x ${item.price} = ${item.qty * item.price}
+                    </b>
+                    <hr className="hr" />
+                  </p>
+                ))}
             </div>
           )}
         </div>
@@ -164,7 +174,7 @@ const Order = ({ match, history }) => {
           </div>
         </div>
         <div className="bottominfos">
-          <h1 className="orderid">Order : {order._id}</h1>
+          <h1 className="orderid">Order : {order.id}</h1>
           {!order.isPaid && (
             <>
               {loadingpay && (
@@ -172,7 +182,7 @@ const Order = ({ match, history }) => {
                   <HashLoader color={"#1e1e2c"} loading={loading} size={50} />
                 </div>
               )}
-              {!sdkReady ? (
+              {/* {!sdkReady ? (
                 <div className="loading-product">
                   <HashLoader color={"#1e1e2c"} loading={loading} size={50} />
                 </div>
@@ -184,7 +194,7 @@ const Order = ({ match, history }) => {
                     onSuccess={successpaymenthandler}
                   />
                 </div>
-              )}
+              )} */}
             </>
           )}
           {userInfo &&
@@ -198,7 +208,6 @@ const Order = ({ match, history }) => {
                 onClick={deliverhandler}
                 leftIcon={<IoMdDoneAll size="16" />}
                 colorScheme="blue"
-                size="xs"
               >
                 DELIVERED
               </Button>

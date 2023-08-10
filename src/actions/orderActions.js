@@ -75,13 +75,16 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${userInfo.token}`,
+    //   },
+    // };
 
-    const { data } = await axios.get(`/api/orders/${id}`, config);
+    const { data } = await axios.get(
+      `http://localhost:8080/api/v1/order/details/${id}`
+    );
+    console.log(data);
     dispatch({
       type: ORDER_DETAILS_SUCCESS,
       payload: data,
@@ -151,7 +154,7 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `/api/orders/${order._id}/deliver`,
+      `/api/orders/${order.id}/deliver`,
       {},
       config
     );

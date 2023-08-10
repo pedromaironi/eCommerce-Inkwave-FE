@@ -52,8 +52,8 @@ const Placeorder = ({ history }) => {
   };
   useEffect(() => {
     if (success) {
-      console.log(order.id);
-      history.push(`/order/${order.id}`);
+      console.log(order.orderId);
+      history.push(`/order/${order.orderId}`);
     }
     return () => {};
     //eslint-disable-next-line
