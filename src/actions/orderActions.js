@@ -26,13 +26,26 @@ export const CreateOrder = (order) => async (dispatch, getState) => {
       type: ORDER_CREATE_REQUEST,
     });
 
-    const { userInfo, totalPrice, date, status, orderItems } = order;
+    const {
+      userInfo,
+      totalPrice,
+      date,
+      status,
+      orderItems,
+      taxPrice,
+      shippingPrice,
+      itemsPrice,
+    } = order;
+
     const orderInfo = {
       userID: userInfo.id,
       date: date,
       total: totalPrice,
       status: status,
       orderItems: orderItems,
+      taxPrice: taxPrice,
+      shippingPrice: shippingPrice,
+      subTotal: itemsPrice,
     };
     // const {
     //   userLogin: { userInfo },

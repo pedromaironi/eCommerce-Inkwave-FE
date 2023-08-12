@@ -18,6 +18,7 @@ import {
   ORDER_DELIVER_RESET,
 } from "../../constants/orderConstants";
 import { Button } from "@chakra-ui/button";
+import { Center } from "@chakra-ui/react";
 const Order = ({ match, history }) => {
   // const [sdkReady, setsdkReady] = useState(false);
   const orderId = match.params.id;
@@ -136,20 +137,23 @@ const Order = ({ match, history }) => {
         </div> */}
         <hr className="hr" />
         <div>
-          <h2>Order Items: </h2>
+          <h2>Productos ordenados: </h2>
           {order.length === 0 ? (
             <p>Your order is empty</p>
           ) : (
             <div className="orders-placeorder">
               {order &&
-                order.orderItems &&
-                order.orderItems.map((item, index) => (
+                order &&
+                order.map((item, index) => (
                   <p key={index}>
                     <span className="color-name">
-                      <Link to={`/product/${item.product}`}>{item.name}</Link>
+                      <Link to={`/product/${item.id_producto}`}>
+                        {item.nombre}
+                      </Link>
                     </span>{" "}
                     <b>
-                      {item.qty} x ${item.price} = ${item.qty * item.price}
+                      {item.cantidad} x ${item.precio_unitario} = $
+                      {item.cantidad * item.precio_unitario}
                     </b>
                     <hr className="hr" />
                   </p>
@@ -160,41 +164,45 @@ const Order = ({ match, history }) => {
       </div>
       <div className="your-products">
         <div className="cart-summ">
-          <h1>Order Summary</h1>
+          <h1>Resumen de la orden</h1>
 
           <div className="calculs-placeorder">
-            <h3>Items: </h3>
-            <p>${order.itemsPrice}</p>
-            <h3>Shipping: </h3>
-            <p>${order.shippingPrice}</p>
+            <h3>Envio: </h3>
+            <p>${order[0].pago_envio}</p>
             <h3>Tax: </h3>
-            <p>${order.taxPrice}</p>
+            <p>${order[0].taxes}</p>
+            <h3>Subtotal: </h3>
+            <p>${order[0].subtotal}</p>
             <h3>Total: </h3>
-            <p>${order.totalPrice}</p>
+            <p>${order[0].total}</p>
           </div>
         </div>
         <div className="bottominfos">
-          <h1 className="orderid">Order : {order.id}</h1>
+          <h1 className="orderid">Orden #{order[0].id_orden}</h1>
           {!order.isPaid && (
             <>
-              {loadingpay && (
+              {/* {loadingpay && (
                 <div className="loading-product">
                   <HashLoader color={"#1e1e2c"} loading={loading} size={50} />
                 </div>
               )}
-              {/* {!sdkReady ? (
-                <div className="loading-product">
-                  <HashLoader color={"#1e1e2c"} loading={loading} size={50} />
-                </div>
-              ) : (
-                <div className="paypalbuttons">
-                  <PayPalButton
-                    className="buttonsp"
-                    amount={order.totalPrice}
-                    onSuccess={successpaymenthandler}
-                  />
-                </div>
-              )} */}
+              <div className="paypalbuttons">
+                <PayPalButton
+                  className="buttonsp"
+                  amount={order.total}
+                  onSuccess={successpaymenthandler}
+                />
+              </div> */}
+              <Button
+                height="40px"
+                width="200px"
+                size="lg"
+                onClick={deliverhandler}
+                leftIcon={<IoMdDoneAll size="16" />}
+                colorScheme="blue"
+              >
+                EN TRANSITO
+              </Button>
             </>
           )}
           {userInfo &&
