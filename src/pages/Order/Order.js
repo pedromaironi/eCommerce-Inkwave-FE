@@ -19,6 +19,8 @@ import {
 } from "../../constants/orderConstants";
 import { Button } from "@chakra-ui/button";
 import { Center } from "@chakra-ui/react";
+
+import { getFormattedCurrentDate } from "../../actions/userActions";
 const Order = ({ match, history }) => {
   // const [sdkReady, setsdkReady] = useState(false);
   const orderId = match.params.id;
@@ -47,6 +49,12 @@ const Order = ({ match, history }) => {
       )
     );
   }
+
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // Los meses van de 0 a 11, por eso sumamos 1 y agregamos el padding.
+  const day = String(today.getDate()).padStart(2, "0");
+
   useEffect(() => {
     if (!userInfo) {
       history.push("/login");
@@ -78,7 +86,6 @@ const Order = ({ match, history }) => {
   //     }
   //   }
   // }, [order, successPay, successDeliver]);
-
   const successpaymenthandler = (paymentResult) => {
     dispatch(payOrder(orderId, paymentResult));
   };
@@ -101,45 +108,42 @@ const Order = ({ match, history }) => {
         <title>Envio | Orden</title>
       </Helmet>
       <div className="informations-placeorder">
-        {/* <div className="shipping-placeorder">
+        <div className="shipping-placeorder">
           <h2>Envio | Orden</h2>
           <p>
             <strong>Name: </strong>
-            {order.user.name}
+            {userInfo.nombre}
           </p>
           <p>
             <strong> Email: </strong>
-            <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+            <a href={`mailto:${userInfo.correo_electronico}`}>
+              {userInfo.correo_electronico}
+            </a>
           </p>
           <p>
             <strong>Address: </strong>
-            {order.shippingAddress.address}, {order.shippingAddress.city},{" "}
-            {order.shippingAddress.cp}, {order.shippingAddress.country}
-            {order.isDelivered ? (
-              <div className="paid">Delivered at {order.deliveredAt}</div>
-            ) : (
-              <div className="notpaid">NOT Delivered YET</div>
-            )}
+            Santiago de los caballeros, Villa bisono, 51000, Republica
+            Dominicana
+            <div className="paid">
+              Enviado el {year}-{month}-{day}{" "}
+            </div>
           </p>
         </div>
         <hr className="hr" />
         <div className="payment-placeorder">
-          <h2>Payment Method</h2>
+          <h2>Método de pago</h2>
           <p>
-            <strong>Method: </strong>
-            {order.paymentMethod}
-            {order.isPaid ? (
-              <div className="paid">PAID AT {order.paidAt}</div>
-            ) : (
-              <div className="notpaid">NOT PAID YET</div>
-            )}
+            <strong>Metodo: Tarjeta</strong>
+            <div className="paid">
+              Pagado el {year}-{month}-{day}
+            </div>
           </p>
-        </div> */}
+        </div>
         <hr className="hr" />
         <div>
           <h2>Productos ordenados: </h2>
           {order.length === 0 ? (
-            <p>Your order is empty</p>
+            <p>Tu orden esta vacia</p>
           ) : (
             <div className="orders-placeorder">
               {order &&
@@ -168,24 +172,25 @@ const Order = ({ match, history }) => {
 
           <div className="calculs-placeorder">
             <h3>Envio: </h3>
-            <p>${order[0].pago_envio}</p>
+            <p>${order[0].pago_envio ? order[0].pago_envio : 0}</p>
             <h3>Tax: </h3>
-            <p>${order[0].taxes}</p>
+            <p>${order[0].taxes ? order[0].taxes : 0}</p>
             <h3>Subtotal: </h3>
-            <p>${order[0].subtotal}</p>
+            <p>${order[0].subtotal ? order[0].subtotal : 0}</p>
             <h3>Total: </h3>
             <p>${order[0].total}</p>
           </div>
         </div>
         <div className="bottominfos">
           <h1 className="orderid">Orden #{order[0].id_orden}</h1>
-          {!order.isPaid && (
+          {true && (
             <>
-              {/* {loadingpay && (
+              {loadingpay && (
                 <div className="loading-product">
                   <HashLoader color={"#1e1e2c"} loading={loading} size={50} />
                 </div>
               )}
+              {/* 
               <div className="paypalbuttons">
                 <PayPalButton
                   className="buttonsp"
@@ -201,7 +206,7 @@ const Order = ({ match, history }) => {
                 leftIcon={<IoMdDoneAll size="16" />}
                 colorScheme="blue"
               >
-                EN TRANSITO
+                Enviado
               </Button>
             </>
           )}
@@ -217,7 +222,7 @@ const Order = ({ match, history }) => {
                 leftIcon={<IoMdDoneAll size="16" />}
                 colorScheme="blue"
               >
-                DELIVERED
+                Enviado
               </Button>
             )}
         </div>

@@ -58,7 +58,7 @@ const login = (email, password) => async (dispatch) => {
   }
 };
 
-const getFormattedCurrentDate = () => {
+export const getFormattedCurrentDate = () => {
   const today = new Date();
   const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, "0"); // Los meses van de 0 a 11, por eso sumamos 1 y agregamos el padding.
@@ -133,7 +133,10 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/users/${id}`, config);
+    const { data } = await axios.get(
+      `http://localhost:8080/api/v1/auth/user/${id}`,
+      config
+    );
     dispatch({
       type: USER_DETAILS_SUCCESS,
       payload: data,
@@ -162,11 +165,10 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.put(`/api/users/profile`, user, config);
+    const { data } = await axios.put(`/api/users/${userInfo.id}`, user, config);
     dispatch({
       type: USER_UPDATE_PROFILE_SUCCESS,
       payload: data,

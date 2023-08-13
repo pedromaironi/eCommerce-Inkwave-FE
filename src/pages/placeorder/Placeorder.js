@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateOrder } from "../../actions/orderActions";
+import { clearCart } from "../../actions/cartActions";
 import { Helmet } from "react-helmet";
 
 import "./Placeorder.css";
@@ -53,6 +54,7 @@ const Placeorder = ({ history }) => {
   useEffect(() => {
     if (success) {
       console.log(order.orderId);
+      dispatch(clearCart());
       history.push(`/order/${order.orderId}`);
     }
     return () => {};

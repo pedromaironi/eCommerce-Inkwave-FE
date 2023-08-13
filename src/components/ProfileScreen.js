@@ -26,10 +26,10 @@ import {
 import { AiOutlineEdit } from "react-icons/ai";
 
 const ProfileScreen = ({ location, history }) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState("Example");
   const [ShowOrders, setShowOrders] = useState(false);
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("Example");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
@@ -38,6 +38,9 @@ const ProfileScreen = ({ location, history }) => {
 
   const nameinput = useRef(null);
   const emailinput = useRef(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 10;
 
   const dispatch = useDispatch();
 
@@ -61,12 +64,13 @@ const ProfileScreen = ({ location, history }) => {
     if (!userInfo) {
       history.push("/login");
     } else {
-      if (!user.name) {
-        dispatch(getUserDetails("profile"));
+      if (!user || !user.nombre) {
+        // Check if user or user.nombre is undefined
+        dispatch(getUserDetails(userInfo.id));
         dispatch(listMyOrders());
       } else {
-        setName(user.name);
-        setEmail(user.email);
+        setName(user.nombre);
+        setEmail(user.correo_electronico);
       }
     }
   }, [dispatch, history, userInfo, user]);
@@ -76,7 +80,7 @@ const ProfileScreen = ({ location, history }) => {
     if (password !== confirmPassword) {
       setMessage("Password do not match");
     } else {
-      dispatch(updateUserProfile({ id: user._id, name, email, password }));
+      dispatch(updateUserProfile({ id: user.id, name, email, password }));
     }
   };
   const inputs = document.querySelectorAll(".inputa");
@@ -110,7 +114,7 @@ const ProfileScreen = ({ location, history }) => {
   return (
     <div className="registerSc">
       <Helmet>
-        <title>Profile</title>
+        <title>Perfil</title>
       </Helmet>
       <Image className="wave" src={wave} />
       <div className="containera">
@@ -119,7 +123,8 @@ const ProfileScreen = ({ location, history }) => {
         </div>
         <div className="rightinfos">
           <div className="showbtn" onClick={() => setShowOrders(!ShowOrders)}>
-            {ShowOrders ? "Show my infos" : "Show my orders"} <IoIosArrowDown />
+            {ShowOrders ? "Mostrar mi informacion" : "Mostrar mis ordenes"}{" "}
+            <IoIosArrowDown />
           </div>
           <>
             {!ShowOrders ? (
@@ -140,16 +145,11 @@ const ProfileScreen = ({ location, history }) => {
                         readOnly={isEditablename}
                         ref={nameinput}
                         className="inputa"
-                        placeholder="Enter name"
+                        placeholder="Nombre..."
                         onChange={(e) => setName(e.target.value)}
                       />
                     </div>
                   </div>
-                  <AiOutlineEdit
-                    size="26"
-                    className="edit"
-                    onClick={nameinputfocus}
-                  />
 
                   <div className="input-div one">
                     <div className="i">
@@ -162,19 +162,11 @@ const ProfileScreen = ({ location, history }) => {
                         readOnly={isEditableemail}
                         ref={emailinput}
                         className="inputa"
-                        placeholder="Enter email"
+                        placeholder="Correo electronico..."
                         onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
                   </div>
-                  <AiOutlineEdit
-                    size="26"
-                    className="edit"
-                    onClick={() => {
-                      setisEditableemail(!isEditableemail);
-                      emailinput.current.focus();
-                    }}
-                  />
 
                   <div className="input-div pass">
                     <div className="i">
@@ -186,13 +178,13 @@ const ProfileScreen = ({ location, history }) => {
                         value={password}
                         required
                         className="inputa"
-                        placeholder="Enter password"
+                        placeholder="Password..."
                         onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
                   </div>
 
-                  <div className="input-div passconf">
+                  <div className="input-div pass">
                     <div className="i">
                       <i className="fas fa-lock"></i>
                     </div>
@@ -201,7 +193,7 @@ const ProfileScreen = ({ location, history }) => {
                         type="password"
                         value={confirmPassword}
                         className="inputa"
-                        placeholder="Confirm password"
+                        placeholder="Confirm password..."
                         onChange={(e) => setConfirmPassword(e.target.value)}
                       />
                     </div>
@@ -226,40 +218,58 @@ const ProfileScreen = ({ location, history }) => {
                   <Table size="sm">
                     <Thead>
                       <Tr>
-                        <Th>ID</Th>
-                        <Th>DATE</Th>
-                        <Th>TOTAL</Th>
-                        <Th>PAID</Th>
-                        <Th>DELIVERED</Th>
+                        <Th>#</Th>
+                        <Th>Fecha</Th>
+                        <Th>Total</Th>
+                        <Th>Pagado</Th>
+                        <Th>Entregado</Th>
                         <Th></Th>
                       </Tr>
                     </Thead>
                     <Tbody>
-                      {orders.map((order) => (
-                        <Tr key={order.id}>
-                          <Td>{order.id}</Td>
-                          <Td>{order.createdAt.substring(0, 10)}</Td>
-                          <Td>{order.totalPrice}</Td>
-                          <Td>
-                            {order.isPaid
-                              ? order.paidAt.substring(0, 10)
-                              : "Not Paid Yet"}
-                          </Td>
-                          <Td>
-                            {order.isDelivered
-                              ? order.deliveredAt.substring(0, 10)
-                              : "Not Yet"}
-                          </Td>
-                          <Td>
-                            <Link to={`/order/${order.id}`}>
-                              <Button size="xs">DETAILS</Button>
-                            </Link>
-                          </Td>
-                        </Tr>
-                      ))}
+                      {orders
+                        .slice(
+                          (currentPage - 1) * ordersPerPage,
+                          currentPage * ordersPerPage
+                        )
+                        .map((order, index) => (
+                          <Tr key={index}>
+                            <Td>{order.id_orden}</Td>
+                            <Td>{order.fecha.substring(0, 10)}</Td>
+                            <Td>{order.total}</Td>
+                            <Td>
+                              {true
+                                ? order.fecha.substring(0, 10)
+                                : "Not Paid Yet"}
+                            </Td>
+                            <Td>
+                              {true ? order.fecha.substring(0, 10) : "Not Yet"}
+                            </Td>
+                            <Td>
+                              <Link to={`/order/${order.id_orden}`}>
+                                <Button size="xs">Detalles</Button>
+                              </Link>
+                            </Td>
+                          </Tr>
+                        ))}
                     </Tbody>
                   </Table>
                 )}
+                <div className="pagination">
+                  {Array.from({
+                    length: Math.ceil(orders.length / ordersPerPage),
+                  }).map((item, index) => (
+                    <span
+                      key={index}
+                      className={`pagination-item ${
+                        index + 1 === currentPage ? "active" : ""
+                      }`}
+                      onClick={() => setCurrentPage(index + 1)}
+                    >
+                      {index + 1}
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
           </>

@@ -197,15 +197,29 @@ export const listMyOrders = () => async (dispatch, getState) => {
     } = getState();
 
     const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+      headers: {},
     };
 
-    const { data } = await axios.get(`/api/orders/myorders`, config);
+    const { data } = await axios.get(
+      `http://localhost:8080/api/v1/order/client/${userInfo.id}`,
+      config
+    );
+    // Crear un objeto para rastrear las órdenes únicas por id_orden
+    const uniqueOrders = {};
+
+    // Filtrar los datos devueltos para obtener órdenes únicas por id_orden
+    data.forEach((order) => {
+      if (!uniqueOrders[order.id_orden]) {
+        uniqueOrders[order.id_orden] = order;
+      }
+    });
+
+    // Crear un array de órdenes únicas a partir del objeto
+    const uniqueOrdersArray = Object.values(uniqueOrders);
+
     dispatch({
       type: ORDER_LIST_MY_SUCCESS,
-      payload: data,
+      payload: uniqueOrdersArray,
     });
   } catch (error) {
     dispatch({

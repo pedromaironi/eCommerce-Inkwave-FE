@@ -24,7 +24,7 @@ import Products from "./pages/products/products";
 import Editproduct from "./pages/Editproduct/Editproduct";
 import Orders from "./pages/Orders/Orders";
 import GlobalStateViewer from "./components/GlobalStateViewer";
-import historyScreen from "./pages/History/historyScreen";
+import historyScreen from "./pages/History/HistoryScreen";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
