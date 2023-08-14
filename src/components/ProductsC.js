@@ -107,15 +107,6 @@ const ProductsC = ({ match, history }) => {
         </h1>
         <div className="filtersbtn ">
           <button
-            className={`filterbtn ${showfilter ? "activebtn" : ""}`}
-            onClick={filterfunc}
-          >
-            {" "}
-            {showfilter ? <IoMdClose size="20" /> : <BsFilter size="20" />}
-            Filtrar
-          </button>
-
-          <button
             className={`searchbtn ${showsearch ? "activebtn" : ""}`}
             onClick={searchfunc}
           >
@@ -152,80 +143,6 @@ const ProductsC = ({ match, history }) => {
       {showsearch && (
         <Route render={({ history }) => <Search history={history} />} />
       )}
-      <div className={`filterarea ${showfilter ? "filter" : "filteroff"}`}>
-        <div className="sortbydiv">
-          <h1> Sort By</h1>
-          <ul>
-            <Link
-              onClick={() => setshowfilter(false)}
-              className="lined"
-              to="?filter"
-            >
-              Default
-            </Link>
-            <Link
-              onClick={() => setshowfilter(false)}
-              className="lined"
-              to="?filter=Rating"
-            >
-              Rating
-            </Link>
-            <Link
-              onClick={() => setshowfilter(false)}
-              className="lined"
-              to="?filter=date"
-            >
-              Date
-            </Link>
-            <Link
-              onClick={() => setshowfilter(false)}
-              className="lined"
-              to="?filter=highprice"
-            >
-              Low to high price
-            </Link>
-            <Link
-              onClick={() => setshowfilter(false)}
-              className="lined"
-              to="?filter=lowprice"
-            >
-              high to low price
-            </Link>
-          </ul>
-        </div>
-        <div className="pricediv">
-          <h1> Price</h1>
-          <FormControl id="email">
-            <Stack spacing={2}>
-              <FormLabel>From :</FormLabel>
-              <NumberInput
-                value={From}
-                bg="white"
-                onChange={(e) => setFrom(e)}
-                borderRadius="md"
-                borderTopRadius="md"
-                borderTopLeftRadius="md"
-              >
-                <NumberInputField />
-              </NumberInput>
-              <FormLabel>To :</FormLabel>
-              <NumberInput
-                value={To}
-                bg="white"
-                onChange={(e) => setTo(e)}
-                borderRadius="md"
-                borderTopRadius="md"
-                borderTopLeftRadius="md"
-              >
-                <NumberInputField />
-              </NumberInput>
-              <Button onClick={pricehandler} type="submit" colorScheme="teal">
-                Filter
-              </Button>
-            </Stack>
-          </FormControl>
-        </div>
-      </div>
       {loading ? (
         <div className="loading">
           <HashLoader color={"#fff"} loading={loading} size={40} />
