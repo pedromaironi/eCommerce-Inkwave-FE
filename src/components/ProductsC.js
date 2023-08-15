@@ -97,7 +97,6 @@ const ProductsC = ({ match, history }) => {
     dispatch(Listproductbyprice(From, To));
   };
 
-  console.log(products);
   return (
     <>
       <div className="Cgfilter">

@@ -5,6 +5,9 @@ import {
   ADD_PRODUCT_TO_FAVORITES_ERROR,
   REMOVE_PRODUCT_FROM_FAVORITES,
   REMOVE_PRODUCT_FROM_FAVORITES_ERROR,
+  ADD_PRODUCT_RATING_REQUEST,
+  ADD_PRODUCT_RATING_SUCCESS,
+  ADD_PRODUCT_RATING_FAIL,
 } from "../constants/cardConstants";
 
 export const addProductFavorite = (id) => async (dispatch, getState) => {
@@ -70,3 +73,35 @@ export const removeProductFavorite = (id) => async (dispatch, getState) => {
     });
   }
 };
+
+export const addProductRating =
+  (productId, rating) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: ADD_PRODUCT_RATING_REQUEST });
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const { data } = await axios.post(
+        `http://localhost:8080/api/v1/products/rating/${userInfo.id}/${productId}/${rating}`,
+        config
+      );
+
+      dispatch({ type: ADD_PRODUCT_RATING_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({
+        type: ADD_PRODUCT_RATING_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { AiFillStar } from "react-icons/ai";
 import { BsStarHalf, BsStar } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { addProductRating } from "../actions/cardActions";
 
-const Rating = ({ value, text }) => {
+const Rating = ({ value, product, text, onRatingChange }) => {
+  const [rating, setRating] = useState(0); // State to hold the rating
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Set the calificacion based on the product's calificacion
+    setRating(product.calificacion); // Assuming you have a field named "calificacion" in the product data
+  }, [product.calificacion]);
+
+  const handleRatingChange = (newRating) => {
+    setRating(newRating);
+    onRatingChange(newRating);
+    dispatch(addProductRating(product.id, newRating)); // Dispatch action to update the product's rating
+  };
+
   return (
     <div className="product-rating">
-      <span>
+      <span onClick={() => handleRatingChange(1)}>
         {" "}
         <i>
           {" "}
@@ -19,7 +35,7 @@ const Rating = ({ value, text }) => {
           )}{" "}
         </i>
       </span>
-      <span>
+      <span onClick={() => handleRatingChange(2)}>
         {" "}
         <i>
           {" "}
@@ -32,7 +48,7 @@ const Rating = ({ value, text }) => {
           )}{" "}
         </i>{" "}
       </span>
-      <span>
+      <span onClick={() => handleRatingChange(3)}>
         <i>
           {" "}
           {value >= 3 ? (
@@ -44,7 +60,7 @@ const Rating = ({ value, text }) => {
           )}{" "}
         </i>
       </span>
-      <span>
+      <span onClick={() => handleRatingChange(4)}>
         {" "}
         <i>
           {" "}
@@ -57,7 +73,7 @@ const Rating = ({ value, text }) => {
           )}{" "}
         </i>
       </span>
-      <span>
+      <span onClick={() => handleRatingChange(5)}>
         {" "}
         <i>
           {" "}
@@ -76,6 +92,8 @@ const Rating = ({ value, text }) => {
 };
 Rating.propTypes = {
   value: PropTypes.number.isRequired,
+  product: PropTypes.object.isRequired,
+  onRatingChange: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
 };
 

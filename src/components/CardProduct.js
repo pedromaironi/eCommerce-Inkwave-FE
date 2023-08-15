@@ -9,15 +9,20 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addProductFavorite,
   removeProductFavorite,
+  addProductRating,
 } from "../actions/cardActions";
 const CardProduct = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [showbtn, setShowbtn] = useState(false);
   const [Incart, setIncart] = useState(false);
+  const [rating, setRating] = useState(product.calificacion); // State to hold the rating
   const dispatch = useDispatch();
   const Cart = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.userLogin);
+  const productList = useSelector((state) => state.productList);
+  const { products } = productList;
   const { cartItems } = Cart;
-
+  const [forceUpdate, setForceUpdate] = useState(false);
   const toggleFavorite = (id) => {
     setIsFavorite(!isFavorite);
     if (isFavorite) {
@@ -33,9 +38,22 @@ const CardProduct = ({ product }) => {
     }
     return () => {};
   }, [cartItems, product.id]);
+
   const addcart = () => {
     setIncart(true);
     dispatch(addToCart(product.id, 1));
+  };
+
+  useEffect(() => {
+    // Check if the product has favorite
+    const productWithFavorite = products.find((p) => p.id === product.id);
+    if (productWithFavorite && productWithFavorite.tiene_favorito === 1) {
+      setIsFavorite(true);
+    }
+  }, [products, product.id]);
+
+  const handleCardProductRatingChange = (newRating) => {
+    setRating(newRating); // Actualiza el estado del rating en CardProduct
   };
 
   return (
@@ -63,20 +81,24 @@ const CardProduct = ({ product }) => {
           </Link>
 
           <div className="icons">
-            {isFavorite ? (
-              <AiFillHeart
-                className="iconFav"
-                color="black"
-                size="26"
-                onClick={() => toggleFavorite(product.id)}
-              />
+            {userInfo ? (
+              isFavorite ? (
+                <AiFillHeart
+                  className="iconFav"
+                  color="black"
+                  size="26"
+                  onClick={() => toggleFavorite(product.id)}
+                />
+              ) : (
+                <AiOutlineHeart
+                  className="iconFav"
+                  color="#999"
+                  size="26"
+                  onClick={() => toggleFavorite(product.id)}
+                />
+              )
             ) : (
-              <AiOutlineHeart
-                className="iconFav"
-                color="#999"
-                size="26"
-                onClick={() => toggleFavorite(product.id)}
-              />
+              ""
             )}
 
             {Incart ? (
@@ -92,7 +114,14 @@ const CardProduct = ({ product }) => {
           </div>
           <div className="productpricecard"> {`${product.precio} $`}</div>
           <div className="Rating">
-            <Rating value={3.5} text={`${product.numReviews} reviews`} />
+            {userInfo ? (
+              <Rating
+                value={rating}
+                product={product}
+                text={""}
+                onRatingChange={handleCardProductRatingChange}
+              />
+            ) : null}
           </div>
         </div>
 

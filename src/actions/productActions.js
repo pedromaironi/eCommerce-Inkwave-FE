@@ -25,10 +25,19 @@ import {
 
 export const listProducts =
   (keyword = "") =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
-      const { data } = await axios.get(`http://localhost:8080/api/v1/products`);
+
+      const { userInfo } = getState().userLogin;
+
+      let endpoint = `http://localhost:8080/api/v1/products`;
+
+      if (userInfo) {
+        endpoint = `http://localhost:8080/api/v1/products/client/${userInfo.id}`;
+      }
+
+      const { data } = await axios.get(endpoint);
 
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
     } catch (error) {
