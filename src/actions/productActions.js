@@ -20,6 +20,10 @@ import {
   PRODUCT_CREATE_REVIEW_SUCCESS,
   PRODUCT_CREATE_REVIEW_FAIL,
 } from "../constants/productConstants";
+import {
+  ADD_INCREMENT_CLICKS,
+  ADD_INCREMENT_CLICKS_ERROR,
+} from "../constants/clicksConstants";
 
 //! Products
 
@@ -103,13 +107,20 @@ export const Listproductbyprice = (from, to) => async (dispatch) => {
     });
   }
 };
-export const listProductDetails = (id) => async (dispatch) => {
+
+export const listProductDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
-    const { data } = await axios.get(
-      `http://localhost:8080/api/v1/products/${id}`
-    );
+    const { userInfo } = getState().userLogin;
+
+    let endpoint = `http://localhost:8080/api/v1/products/${id}`;
+
+    if (userInfo) {
+      endpoint = `http://localhost:8080/api/v1/products/${id}/${userInfo.id}`;
+    }
+
+    const { data } = await axios.get(endpoint);
 
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
@@ -122,6 +133,35 @@ export const listProductDetails = (id) => async (dispatch) => {
     });
   }
 };
+
+export const addProductClick =
+  (userId, productId) => async (dispatch, getState) => {
+    const { userInfo } = getState().userLogin;
+    if (userInfo) {
+      try {
+        const response = await axios.post(
+          `http://localhost:8080/api/v1/products/click/${userId}/${productId}`
+        );
+        const clickCount = response.data.clickCount;
+
+        dispatch({
+          type: ADD_INCREMENT_CLICKS,
+          payload: {
+            productId: productId,
+            clickCount: clickCount,
+          },
+        });
+      } catch (error) {
+        dispatch({
+          type: ADD_INCREMENT_CLICKS_ERROR,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    }
+  };
 
 export const DeleteProduct = (id) => async (dispatch, getState) => {
   try {

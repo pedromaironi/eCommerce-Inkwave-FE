@@ -11,6 +11,7 @@ import {
 } from "./reducers/productReducers";
 import { categoryListReducer } from "./reducers/categoryReducer";
 import { cartReducer } from "./reducers/cartReducers";
+import { clicksReducer } from "./reducers/clicksReducers";
 import {
   CreateOrderReducers,
   OrderDeliverreducer,
@@ -53,6 +54,7 @@ const reducer = combineReducers({
   categoryList: categoryListReducer, // Add the categoryListReducer
   favoriteProducts: cardReducer,
   ratingReducer: ratingReducer,
+  clicksReducers: clicksReducer,
 });
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")

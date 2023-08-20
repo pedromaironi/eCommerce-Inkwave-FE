@@ -30,9 +30,8 @@ import {
 } from "../../constants/productConstants";
 import "./product.css";
 import { Link } from "react-router-dom";
-const Productpage = ({ history, match }) => {
+const ProductPage = ({ history, match }) => {
   const [qty, setQty] = useState(1);
-  const [rating, setrating] = useState(0);
   const [comment, setcomment] = useState("");
 
   const imgs = document.querySelectorAll(".img-select a");
@@ -41,6 +40,9 @@ const Productpage = ({ history, match }) => {
   let imgId = 1;
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
+  const [rating, setRating] = useState(
+    productDetails ? productDetails.product.calificacion : 0
+  ); // State to hold the rating
   const { loading, error, product } = productDetails;
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -68,7 +70,7 @@ const Productpage = ({ history, match }) => {
   useEffect(() => {
     if (successProductReview) {
       alert("Review Submitted!");
-      setrating(0);
+      setRating(0);
       setcomment("");
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
@@ -86,6 +88,10 @@ const Productpage = ({ history, match }) => {
   //Handler of button add to cart
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
+  };
+
+  const handleCardProductRatingChange = (newRating) => {
+    setRating(newRating); // Actualiza el estado del rating en CardProduct
   };
 
   return (
@@ -151,7 +157,14 @@ const Productpage = ({ history, match }) => {
                 <Link to="/shop" className="product-link">
                   visit our store
                 </Link>
-                <Rating value={3} text={`${product.numReviews} reviews`} />
+                {userInfo ? (
+                  <Rating
+                    value={rating}
+                    product={product}
+                    text={""}
+                    onRatingChange={handleCardProductRatingChange}
+                  />
+                ) : null}
                 <div className="product-price">
                   <p className="last-price">
                     Precio antiguo:{" "}
@@ -290,7 +303,7 @@ const Productpage = ({ history, match }) => {
               {userInfo ? (
                 <FormControl>
                   <FormLabel>Rating :</FormLabel>
-                  <Select onChange={(e) => setrating(e.target.value)}>
+                  <Select onChange={(e) => setRating(e.target.value)}>
                     <option value="1">1 POOR</option>
                     <option value="2">2 FAIR</option>
                     <option value="3">3 GOOD</option>
@@ -320,4 +333,4 @@ const Productpage = ({ history, match }) => {
   );
 };
 
-export default Productpage;
+export default ProductPage;

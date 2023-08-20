@@ -11,18 +11,25 @@ import {
   removeProductFavorite,
   addProductRating,
 } from "../actions/cardActions";
+import { addProductClick } from "../actions/productActions";
 const CardProduct = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [showbtn, setShowbtn] = useState(false);
   const [Incart, setIncart] = useState(false);
-  const [rating, setRating] = useState(product.calificacion); // State to hold the rating
+  const [rating, setRating] = useState(
+    product.calificacion ? product.calificacion : 0
+  ); // State to hold the rating
   const dispatch = useDispatch();
   const Cart = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.userLogin);
   const productList = useSelector((state) => state.productList);
   const { products } = productList;
   const { cartItems } = Cart;
-  const [forceUpdate, setForceUpdate] = useState(false);
+
+  const handleLinkClick = () => {
+    dispatch(addProductClick(userInfo.id, product.id)); // Registra el clic del producto
+  };
+
   const toggleFavorite = (id) => {
     setIsFavorite(!isFavorite);
     if (isFavorite) {
@@ -59,6 +66,7 @@ const CardProduct = ({ product }) => {
   return (
     <>
       <div
+        onClick={handleLinkClick}
         className="cardProduct"
         onMouseOver={() => {
           setShowbtn(true);
