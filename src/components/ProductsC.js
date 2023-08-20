@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CardProduct from "./CardProduct";
+import { searchProducts } from "../actions/productActions"; // Importa la acción adecuada
 import {
   listProducts,
   ListproductbyCg,
@@ -11,7 +12,6 @@ import { listCategories } from "../actions/categoryActions";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsFilter } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
-import Search from "./Search";
 import {
   NumberInput,
   NumberInputField,
@@ -19,11 +19,14 @@ import {
   Button,
   Stack,
   FormControl,
+  Input,
 } from "@chakra-ui/react";
 import HashLoader from "react-spinners/HashLoader";
 import { Link, Route } from "react-router-dom";
+import { PRODUCT_SEARCH_RESET } from "../constants/productConstants";
 const ProductsC = ({ match, history }) => {
   const [From, setFrom] = useState(0);
+  const [keywords, setkeywords] = useState("");
 
   const [To, setTo] = useState(0);
 
@@ -34,6 +37,11 @@ const ProductsC = ({ match, history }) => {
 
   //* Product List
   const productList = useSelector((state) => state.productList);
+
+  //* Product Search List
+  const productSearchList = useSelector(
+    (state) => state.productSearchReducer.products
+  );
 
   //* Product by Category
   const productbycg = useSelector((state) => {
@@ -59,6 +67,12 @@ const ProductsC = ({ match, history }) => {
     dispatch(listCategories());
   }, [dispatch]);
 
+  const Handlesearch = (e) => {
+    if (keywords.trim() && e.which === 13) {
+      dispatch(searchProducts(keywords)); // Despacha la acción searchProducts
+    }
+  };
+
   const { loading, error, products } = productbycg
     ? productbycg
     : productList
@@ -77,6 +91,12 @@ const ProductsC = ({ match, history }) => {
       dispatch(listProducts(keyword));
     }
   }, [dispatch, Cg, keyword]);
+
+  useEffect(() => {
+    if (productSearchList.length > 0 && !keywords) {
+      dispatch({ type: PRODUCT_SEARCH_RESET });
+    }
+  }, [productSearchList, history, keywords, dispatch]);
 
   const [showfilter, setshowfilter] = useState(false);
   const [showsearch, setshowsearch] = useState(false);
@@ -140,7 +160,20 @@ const ProductsC = ({ match, history }) => {
         </div>
       </div>
       {showsearch && (
-        <Route render={({ history }) => <Search history={history} />} />
+        <Route
+          render={({ history }) => (
+            <div className="Searcharea">
+              <Input
+                size="lg"
+                value={keywords}
+                onChange={(e) => setkeywords(e.target.value)}
+                onKeyPress={Handlesearch}
+                bgColor="white"
+                placeholder="Buscar"
+              />
+            </div>
+          )}
+        />
       )}
       {loading ? (
         <div className="loading">
@@ -154,9 +187,13 @@ const ProductsC = ({ match, history }) => {
         </h1>
       ) : (
         <div className="cardsProduct">
-          {products.map((product) => (
-            <CardProduct key={product.id} product={product} />
-          ))}
+          {productSearchList.length > 0
+            ? productSearchList.map((product) => (
+                <CardProduct key={product.id} product={product} />
+              ))
+            : products.map((product) => (
+                <CardProduct key={product.id} product={product} />
+              ))}
         </div>
       )}
     </>

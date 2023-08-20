@@ -19,6 +19,9 @@ import {
   PRODUCT_CREATE_REVIEW_REQUEST,
   PRODUCT_CREATE_REVIEW_SUCCESS,
   PRODUCT_CREATE_REVIEW_FAIL,
+  PRODUCT_SEARCH_REQUEST,
+  PRODUCT_SEARCH_FAIL,
+  PRODUCT_SEARCH_SUCCESS,
 } from "../constants/productConstants";
 import {
   ADD_INCREMENT_CLICKS,
@@ -264,6 +267,38 @@ export const UpdateProduct = (product) => async (dispatch, getState) => {
     });
   }
 };
+
+export const searchProducts = (searchTerm) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCT_SEARCH_REQUEST,
+    });
+
+    const config = {
+      searchTerm: searchTerm,
+    };
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const { data } = await axios.get(
+      `http://localhost:8080/api/v1/products/search/${userInfo.id}/${searchTerm}`
+    );
+    dispatch({
+      type: PRODUCT_SEARCH_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_SEARCH_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
 export const createproductReview =
   (productId, review) => async (dispatch, getState) => {
     try {
