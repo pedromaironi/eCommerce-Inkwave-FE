@@ -2,12 +2,15 @@
 .contactUs {
   position: relative;
   top: 70px;
-  flex-wrap: wrap;
   margin-bottom: 130px;
 }
 .headerContact {
   position: relative;
-  display: inline-block;
+  display: flex;
+  font-weight: 800;
+  font-size: 3rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .headerContact .text {

@@ -13,36 +13,36 @@ const Footer = () => {
           <h1>Categories</h1>
           <ul>
             <li>
-              <Link to="/shop/?cg=Women">Women</Link>
+              <Link to="/shop/?cg=tshirt">Tshirts</Link>
             </li>
             <li>
-              <Link to="/shop/?cg=Men">Men</Link>
+              <Link to="/shop/?cg=Joggers">Joggers</Link>
             </li>
             <li>
-              <Link to="/shop/?cg=Shoes">Shoes</Link>
+              <Link to="/shop/?cg=Zapatos">Zapatos</Link>
             </li>
             <li>
-              <Link to="/shop/?cg=Watches">Watches</Link>
+              <Link to="/shop/?cg=Reloj">Relojes</Link>
             </li>
           </ul>
         </div>
 
         <div className="fooHelp">
-          <h1>Help</h1>
+          <h1>Ayuda</h1>
           <ul>
-            <li>Tracke Order</li>
-            <li>Returns</li>
-            <li>Shipping</li>
+            <li>Ordenes</li>
+            <li>Devolucion</li>
+            <li>Envios</li>
             <li>FAQs</li>
           </ul>
         </div>
 
         <div className="footerGetInTouch">
-          <h1>Get in touch</h1>
+          <h1>PONERSE EN CONTACTO</h1>
           <ul>
             <p>
-              Any questions? Let us know in store at BP 473 Complexe
-              universitaire Al Qods, Oujda 60000 or call us on (+212) 65964665
+              ¿Alguna pregunta? Háganos saber en la tienda en BP 473 Complexe
+              universidad Al Qods, Oujda 60000 o llámenos al (+809) 5555555
             </p>
             <li className="footerIcons">
               <FiFacebook size="25" />
@@ -57,20 +57,20 @@ const Footer = () => {
         </div>
 
         <div className="footerNews">
-          <h1>Newsletter</h1>
+          <h1>Boletin informativo</h1>
           <ul>
             <li>
               <Stack spacing={3}>
                 <Input
                   variant="flushed"
-                  placeholder="email@example.com"
+                  placeholder="email@inkwave.com"
                   size="10"
                   width="200px"
                 />
               </Stack>
             </li>
             <li>
-              <button className="footerBtn">Subscribe</button>
+              <button className="footerBtn">Suscribirse</button>
             </li>
           </ul>
         </div>
@@ -93,10 +93,7 @@ const Footer = () => {
         </div>
 
         <div className="paragraphFooter">
-          <p>
-            Copyright ©2021 All rights reserved | This template is made with ♡
-            by Pedro M. Toribio
-          </p>
+          <p>Copyright ©2021 All rights reserved by Pedro M. Toribio</p>
           {/* <Link to="">Abdessamad bourhjoul</Link>
           <Link to="">Soufian zaam</Link>
           <Link to="">Souhail ouabou</Link> */}

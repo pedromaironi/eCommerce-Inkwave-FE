@@ -19,14 +19,12 @@ const Contactus = () => {
   const [body, setbody] = useState("");
 
   const handlesubmit = () => {
-    window.open(
-      `mailto:abdessamadbouthjoul@gmail.com?subject=Sample&body=${body}`
-    );
+    window.open(`mailto:inkwave@gmail.com?subject=Sample&body=${body}`);
   };
   return (
     <div className="contactUs">
       <Helmet>
-        <title>Contact</title>
+        <title>Contactanos</title>
       </Helmet>
       <div className="headerContact">
         <Image
@@ -36,13 +34,13 @@ const Contactus = () => {
           objectFit="cover"
         />
         <div className="text">
-          <h2>Contact</h2>
+          <h2>Contactanos</h2>
         </div>
       </div>
 
       <div className="card-contact">
         <div className="sendMsg">
-          <h4>Send Us A Message</h4>
+          <h4>Envianos un mensaje</h4>
           <div className="inputContact">
             <InputGroup width="450px">
               <InputLeftElement
@@ -53,7 +51,7 @@ const Contactus = () => {
                 value={email}
                 onChange={(e) => setemail(e.target.value)}
                 type="text"
-                placeholder="Your Email Address"
+                placeholder="Correo electronico"
               />
             </InputGroup>
           </div>
@@ -62,7 +60,7 @@ const Contactus = () => {
               value={body}
               onChange={(e) => setbody(e.target.value)}
               width="450px"
-              placeholder="How Can We Help"
+              placeholder="Como podemos ayudarte?"
               height="200px"
             />
           </div>
@@ -75,7 +73,7 @@ const Contactus = () => {
               size="180px"
               className="contactBtn"
             >
-              Submit
+              Enviar
             </Button>
           </div>
         </div>
@@ -85,11 +83,8 @@ const Contactus = () => {
               <GiPositionMarker opacity="0.8" />
             </div>
             <div className="adressCtn">
-              <h3> Address</h3>
-              <p>
-                Coza Store Center 8th floor, 379 Hudson St, New York, NY 10018
-                US
-              </p>
+              <h3> Direccion</h3>
+              <p>Santiago de los caballeros, 51000, mella 85</p>
             </div>
           </div>
           <div className="box">
@@ -97,8 +92,8 @@ const Contactus = () => {
               <HiOutlinePhone opacity="0.8" />
             </div>
             <div className="adressCtn">
-              <h3>Lets Talk</h3>
-              <p className="infoCtn">0657964665</p>
+              <h3>Hablemos!</h3>
+              <p className="infoCtn">8095555555</p>
             </div>
           </div>
           <div className="box">
@@ -106,8 +101,8 @@ const Contactus = () => {
               <BsEnvelope opacity="0.8" />
             </div>
             <div className="adressCtn">
-              <h3>Sale Support</h3>
-              <p className="infoCtn">Store@gmail.com</p>
+              <h3>Soporte tecnico</h3>
+              <p className="infoCtn">inkwave@gmail.com</p>
             </div>
           </div>
         </div>

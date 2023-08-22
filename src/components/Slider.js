@@ -5,20 +5,20 @@ import ShopNowBtn from "./ShopNowBtn";
 const Slider = () => {
   const SliderData = [
     {
-      title: "Jackets & Coats",
-      subtitle: "Quality Matters.",
+      title: "Chaquetas y Abrigos",
+      subtitle: "La calidad importa",
     },
     {
-      title: "Find The Best Outfit",
-      subtitle: "With 30% Off",
+      title: "Encuentra el mejor atuendo",
+      subtitle: "Con 30% de descuento",
     },
     {
-      title: "The Best Shoes",
-      subtitle: "Comfort For your long day",
+      title: "Los mejores zapatos",
+      subtitle: "Comodidad para tu largo día",
     },
     {
-      title: "Next Season Is here",
-      subtitle: "Enjoy your summer with us.",
+      title: "La proxima temporada esta aqui!",
+      subtitle: "Disfruta de tu verano con nosotros",
     },
   ];
   const [current, setCurrent] = useState(0);

@@ -109,16 +109,16 @@ const Nav = ({ history }) => {
       </div>
       <ul className="navLinks" ref={navLinks}>
         <NavLink to="/" exact={true} activeClassName="activlink">
-          <li>Home</li>
+          <li>Inicio</li>
         </NavLink>
         <NavLink to="/shop" activeClassName="activlink">
-          <li>Shop</li>
+          <li>Tienda</li>
         </NavLink>
         <NavLink to="/contactus" activeClassName="activlink">
-          <li>Contact us</li>
+          <li>Contactanos</li>
         </NavLink>
         <NavLink to="/about" activeClassName="activlink">
-          <li>About</li>
+          <li>Acerca de nosotros</li>
         </NavLink>
       </ul>
       <div className="burger" ref={Buric} onClick={onBurgActive}>
