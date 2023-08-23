@@ -22,9 +22,9 @@ const Home = () => {
           <Cardscg title="Hombres" />
           <Cardscg title="Accesorios" />
         </div>
+        <RecommendedProducts />
         <CgDiv />
         <ProductsC />
-        <RecommendedProducts />
       </div>
     </>
   );

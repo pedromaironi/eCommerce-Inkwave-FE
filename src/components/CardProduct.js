@@ -30,6 +30,13 @@ const CardProduct = ({ product }) => {
     dispatch(addProductClick(userInfo.id, product.id)); // Registra el clic del producto
   };
 
+  const maxNameLength = 15; // Cantidad máxima de caracteres antes de agregar puntos suspensivos
+
+  const truncatedName =
+    product.nombre.length > maxNameLength
+      ? product.nombre.slice(0, maxNameLength) + "..." // Agregar puntos suspensivos
+      : product.nombre;
+
   const toggleFavorite = (id) => {
     setIsFavorite(!isFavorite);
     if (isFavorite) {
@@ -38,6 +45,7 @@ const CardProduct = ({ product }) => {
       dispatch(addProductFavorite(id));
     }
   };
+
   useEffect(() => {
     const isincart = cartItems.find((x) => x.product === product.id);
     if (isincart) {
@@ -85,7 +93,7 @@ const CardProduct = ({ product }) => {
         </div>
         <div className="bottomcard">
           <Link to={`/product/${product.id}`} exact={"true"}>
-            <span>{product.nombre}</span>
+            <span>{truncatedName}</span>
           </Link>
 
           <div className="icons">
