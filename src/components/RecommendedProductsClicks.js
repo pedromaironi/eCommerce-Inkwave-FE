@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HashLoader from "react-spinners/HashLoader";
 import CardProduct from "./CardProduct";
-import { recommendationBasedContent } from "../actions/recommendationActions";
+import { clickRecommendationBasedContent } from "../actions/recommendationActions";
 import { Link, Route } from "react-router-dom";
 import {
   NumberInput,
@@ -13,24 +13,26 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 
-const RecommendedProducts = ({ match, history }) => {
+const RecommendedProductsClicks = ({ match, history }) => {
   const dispatch = useDispatch();
 
-  //* Recommendations List
+  //   //* Recommendations List
   const recommendationsBasedContent = useSelector(
-    (state) => state.recommendationReducer
+    (state) => state.clickRecommendationReducer
   );
 
   const { loading, error, recommendations } = recommendationsBasedContent;
 
   useEffect(() => {
-    dispatch(recommendationBasedContent());
+    setTimeout(() => {
+      dispatch(clickRecommendationBasedContent());
+    }, 5000); // Espera 5 segundos antes de ejecutar la acción
   }, [dispatch]);
 
   return (
     <>
       <div className="Cgfilter">
-        <h1>Productos a considerar segun tus gustos</h1>
+        <h1>Similares a productos que viste</h1>
       </div>
 
       {loading ? (
@@ -61,4 +63,4 @@ const RecommendedProducts = ({ match, history }) => {
   );
 };
 
-export default RecommendedProducts;
+export default RecommendedProductsClicks;
